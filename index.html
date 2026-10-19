@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>IT 401 Reviewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a casebook-style study desk. Header with profile, sticky tab bar, then one working view at a time. Section numbers (§65) are the signature motif. */
+:root {
+  --bg: #edf2f4;
+  --surface: #ffffff;
+  --surface-2: #f5f8f9;
+  --ink: #12212b;
+  --muted: #52636e;
+  --line: #d3dde2;
+  --accent: #0b6b7c;
+  --accent-ink: #ffffff;
+  --accent-soft: #d5edf0;
+  --good: #17784a;
+  --good-soft: #dcf2e6;
+  --bad: #ad2f27;
+  --bad-soft: #fbe2df;
+  --warn: #8a5d00;
+  --warn-soft: #fbefcf;
+  --shadow: 0 1px 2px rgba(18, 33, 43, .06), 0 6px 18px rgba(18, 33, 43, .06);
+  --f-display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e191f;
+    --surface: #15252d;
+    --surface-2: #1a2d36;
+    --ink: #e5eef1;
+    --muted: #93a8b3;
+    --line: #27393f;
+    --accent: #5cc6d4;
+    --accent-ink: #072a31;
+    --accent-soft: #15353c;
+    --good: #5ecb94;
+    --good-soft: #14352a;
+    --bad: #ff948a;
+    --bad-soft: #3d1f1d;
+    --warn: #f0c35c;
+    --warn-soft: #3a2f12;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e191f;
+  --surface: #15252d;
+  --surface-2: #1a2d36;
+  --ink: #e5eef1;
+  --muted: #93a8b3;
+  --line: #27393f;
+  --accent: #5cc6d4;
+  --accent-ink: #072a31;
+  --accent-soft: #15353c;
+  --good: #5ecb94;
+  --good-soft: #14352a;
+  --bad: #ff948a;
+  --bad-soft: #3d1f1d;
+  --warn: #f0c35c;
+  --warn-soft: #3a2f12;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 15px;
+  line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 56px;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  background: var(--bg);
+  z-index: 10;
+}
+.wrap { max-width: 1080px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.1; }
+p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+/* Header */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+.top { padding-bottom: 22px; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+h1 { font-size: clamp(30px, 6vw, 54px); font-weight: 800; letter-spacing: -.02em; margin-top: 10px; }
+h1 em { font-style: normal; color: var(--accent); }
+.lede { color: var(--muted); max-width: 52ch; margin-top: 12px; }
+.avatar {
+  width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; flex: none;
+  background: var(--accent); color: var(--accent-ink); font-family: var(--f-display); font-weight: 800; font-size: 20px;
+}
+.avbtn { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 14px 4px 4px; box-shadow: var(--shadow); }
+.avbtn:hover { border-color: var(--accent); }
+.avbtn .avatar { width: 36px; height: 36px; font-size: 14px; }
+.avname { font-weight: 600; max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.overlay { position: fixed; inset: 0; z-index: 20; background: rgba(10, 20, 26, .6); display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.modal { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow); width: min(100%, 440px); max-height: 100%; overflow: auto; padding: 22px; }
+.modal form { display: grid; gap: 14px; }
+.mhead { display: flex; gap: 14px; align-items: center; margin-bottom: 16px; }
+.mhead h2 { font-size: 22px; }
+.mhead .sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.modal label { font: 600 11px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.modal input[type="text"] { width: 100%; min-width: 0; font: 600 18px var(--f-display); color: var(--ink); background: var(--surface-2); border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-top: 6px; }
+.modal input[type="text"]:focus { outline: none; border-color: var(--accent); }
+.err { color: var(--bad); font-size: 13px; margin: 0; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px 0; border-block: 1px solid var(--line); }
+.stat b { display: block; font: 700 22px/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--muted); }
+.mactions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+.mactions .right { display: flex; flex-wrap: wrap; gap: 10px; }
+
+/* Nav */
+.nav {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg);
+  padding-block: 8px; margin-bottom: 18px; display: flex; gap: 8px; align-items: center; overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+}
+.tab {
+  border: 1px solid transparent; background: transparent; padding: 9px 16px; border-radius: 999px; font-weight: 600; white-space: nowrap; color: var(--muted);
+}
+.tab:hover { color: var(--ink); background: var(--surface); }
+.tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+.spacer { flex: 1; }
+.iconbtn { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 8px 14px; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.iconbtn:hover { color: var(--ink); }
+
+/* Controls */
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin-bottom: 16px; }
+.search {
+  flex: 1 1 240px; min-width: 0; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit;
+}
+.search:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 13px; font-size: 13px; color: var(--muted);
+}
+.chip:hover { border-color: var(--accent); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin-bottom: 14px; }
+.fgroup { min-width: 0; }
+.fgroup h4 { margin: 0 0 8px; font: 600 11px var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.fgroup.wide { grid-column: 1 / -1; }
+select {
+  font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; max-width: 100%;
+}
+.count { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.linkbtn { background: none; border: 0; color: var(--accent); font-weight: 600; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Penalty cards */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 14px; }
+.sec { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.sec .num { font: 600 13px var(--f-mono); color: var(--accent); background: var(--accent-soft); align-self: flex-start; border-radius: 8px; padding: 3px 9px; }
+.sec h3 { font-size: 18px; line-height: 1.2; }
+.sec .pen { color: var(--muted); font-size: 14px; }
+.bar { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; align-items: center; margin-top: auto; padding-top: 4px; }
+.bar .track { height: 8px; border-radius: 99px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
+.bar .track i { display: block; height: 100%; background: var(--accent); border-radius: 99px; }
+.bar.life .track i { background: var(--bad); }
+.bar span { font: 600 12px var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.badges { display: flex; flex-wrap: wrap; gap: 6px; }
+.badge { font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 999px; }
+.badge.good { background: var(--good-soft); color: var(--good); }
+.badge.bad { background: var(--bad-soft); color: var(--bad); }
+.badge.neutral { background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+.note { font-size: 12.5px; color: var(--warn); background: var(--warn-soft); border-radius: 8px; padding: 6px 9px; }
+.empty { text-align: center; color: var(--muted); padding: 40px 16px; background: var(--surface); border: 1px dashed var(--line); border-radius: 16px; }
+
+/* Concepts */
+.group { margin-bottom: 30px; }
+.group > h2 { font-size: 24px; margin-bottom: 4px; }
+.group > p.sub { color: var(--muted); margin-bottom: 14px; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: 12px; }
+.cards.wide { grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; min-width: 0; }
+.card h3 { font-size: 17px; margin-bottom: 6px; }
+.card p, .card li { color: var(--muted); font-size: 14px; }
+.card ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 3px; }
+.card .tag { font: 600 11px var(--f-mono); color: var(--accent); letter-spacing: .06em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+.card .rn { font-style: italic; }
+.s65 { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; }
+.s65 .card.big { background: var(--accent); border-color: var(--accent); }
+.s65 .card.big, .s65 .card.big h3, .s65 .card.big p { color: var(--accent-ink); }
+.s65 .card.big .tag { color: var(--accent-ink); opacity: .8; }
+.s65 .card.big h3 { font-size: 26px; }
+.s65 .col { display: grid; gap: 12px; align-content: start; }
+
+/* Flashcards */
+.fc-wrap { display: grid; gap: 14px; max-width: 720px; margin: 0 auto; }
+.fc {
+  min-height: 280px; border-radius: 22px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow);
+  padding: 28px; display: flex; flex-direction: column; justify-content: space-between; gap: 18px; text-align: left; width: 100%;
+}
+.fc.back { background: var(--accent-soft); border-color: var(--accent); }
+.fc .meta { display: flex; justify-content: space-between; gap: 10px; font: 600 12px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.fc .body { font: 700 clamp(20px, 3.6vw, 28px)/1.25 var(--f-display); text-wrap: balance; overflow-wrap: anywhere; white-space: pre-line; }
+.fc.back .body { font: 500 clamp(17px, 2.8vw, 21px)/1.45 var(--f-body); }
+.fc .hint { color: var(--muted); font-size: 13px; }
+.fc-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+.btn { border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 16px; font-weight: 600; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.good { background: var(--good-soft); border-color: var(--good); color: var(--good); }
+.btn.bad { background: var(--bad-soft); border-color: var(--bad); color: var(--bad); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.progress { height: 8px; border-radius: 99px; background: var(--surface); border: 1px solid var(--line); overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--accent); transition: width .25s ease; }
+
+/* Quiz */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: clamp(18px, 4vw, 30px); max-width: 760px; margin: 0 auto; box-shadow: var(--shadow); }
+.panel h2 { font-size: clamp(22px, 4vw, 30px); }
+.panel .sub { color: var(--muted); margin: 6px 0 18px; }
+.setup { display: grid; gap: 18px; }
+.q-meta { display: flex; justify-content: space-between; gap: 10px; font: 600 12px var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.q { font: 700 clamp(19px, 3.4vw, 26px)/1.25 var(--f-display); margin: 16px 0; text-wrap: balance; }
+.opts { display: grid; gap: 10px; }
+.opt {
+  text-align: left; border: 1.5px solid var(--line); background: var(--surface); border-radius: 14px; padding: 13px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start;
+}
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--surface-2); }
+.opt .k { font: 600 12px var(--f-mono); width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: var(--surface-2); color: var(--muted); border: 1px solid var(--line); }
+.opt.right { border-color: var(--good); background: var(--good-soft); }
+.opt.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.opt:disabled { cursor: default; }
+.explain { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: var(--accent-soft); color: var(--ink); font-size: 14px; }
+.score { font: 800 clamp(48px, 12vw, 84px)/1 var(--f-display); color: var(--accent); font-variant-numeric: tabular-nums; }
+.review { display: grid; gap: 10px; margin: 18px 0; }
+.review .item { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--surface-2); font-size: 14px; }
+.review .item b { display: block; margin-bottom: 4px; }
+.review .item span { color: var(--good); font-weight: 600; }
+
+footer { margin-top: 36px; color: var(--muted); font-size: 12.5px; max-width: 80ch; }
+
+@media (max-width: 720px) {
+  .avname { display: none; }
+  .avbtn { padding: 4px; }
+  .s65 { grid-template-columns: minmax(0, 1fr); }
+  .fc { padding: 20px; min-height: 250px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="eyebrow">IT 401 · Information Assurance and Security 2</div>
+    <button class="avbtn" id="profileBtn" type="button" aria-label="Open your profile"><span class="avatar" id="avatar">?</span><span class="avname" id="avName"></span></button>
+  </div>
+  <header class="top">
+    <h1>Cyber Crime <em>Offenses</em> and Penalties</h1>
+    <p class="lede">Midterm reviewer built from the module. Browse the concepts, filter every IT Act 2000 section, flip flashcards, then test yourself.</p>
+  </header>
+
+  <nav class="nav" role="tablist" aria-label="Reviewer sections">
+    <button class="tab" role="tab" data-tab="concepts" aria-selected="true">Concepts</button>
+    <button class="tab" role="tab" data-tab="penalties" aria-selected="false">Penalties</button>
+    <button class="tab" role="tab" data-tab="cards" aria-selected="false">Flashcards</button>
+    <button class="tab" role="tab" data-tab="quiz" aria-selected="false">Quiz</button>
+    <span class="spacer"></span>
+    <button class="iconbtn" id="themeBtn" type="button">Theme</button>
+  </nav>
+
+  <main id="view"></main>
+
+  <footer>
+    Source: IT 401 Midterm Module, Cyber Crime Offenses and Penalties (CSTC College of Sciences, Technology and Communication). Penalties follow the module's table. The module's Section 65 text calls it non-bailable while its table calls it bailable, so confirm which one your instructor expects. Items marked "Reviewer note" are short plain-language explanations added for study and are not from the module.
+  </footer>
+</div>
+
+<script>
+/* ---------- data ---------- */
+var CATS = [
+  { id: "core", label: "Source code & computer" },
+  { id: "id", label: "Identity & privacy" },
+  { id: "content", label: "Obscene & offensive content" },
+  { id: "terror", label: "Terrorism & protected systems" },
+  { id: "inter", label: "Intermediaries & authorities" },
+  { id: "cert", label: "Certificates & fraud" }
+];
+
+var SECTIONS = [
+  { n: "65", t: "Tampering with computer source code", pen: "Imprisonment up to 3 years or fine (up to Rs. 2 lakh)", yrs: 3, bail: true, cog: true, court: "Triable by Court", cat: "core", note: "Module text says non-bailable; module table says bailable." },
+  { n: "66", t: "Computer related offences", pen: "Imprisonment up to 3 years or fine", yrs: 3, bail: true, cog: true, cat: "core" },
+  { n: "66-A", t: "Sending offensive messages through communication service, etc.", pen: "Imprisonment up to 3 years and fine", yrs: 3, bail: true, cog: true, court: "Triable by Court", cat: "content" },
+  { n: "66-B", t: "Dishonestly receiving stolen computer resource or communication device", pen: "Imprisonment up to 3 years and/or fine up to Rs. 1 lakh", yrs: 3, bail: true, cog: true, court: "Triable by Court", cat: "core" },
+  { n: "66-C", t: "Identity theft", pen: "Imprisonment of either description up to 3 years and/or fine", yrs: 3, bail: true, cog: true, court: "Triable by Court", cat: "id" },
+  { n: "66-D", t: "Cheating by personation using computer resource", pen: "Imprisonment of either description up to 3 years and/or fine", yrs: 3, bail: true, cog: true, court: "Triable by Court", cat: "id" },
+  { n: "66-E", t: "Violation of privacy", pen: "Imprisonment up to 3 years and/or fine", yrs: 3, bail: true, cog: true, court: "Triable by Court", cat: "id" },
+  { n: "66-F", t: "Cyber terrorism", pen: "Imprisonment which may extend to life", yrs: 99, bail: false, cog: true, court: "Triable by Court of Sessions", cat: "terror" },
+  { n: "67", t: "Publishing or transmitting obscene material in electronic form", pen: "First conviction: up to 3 years and/or fine. Subsequent: up to 5 years and/or fine", yrs: 5, bail: true, cog: true, court: "Triable by Court", cat: "content" },
+  { n: "67-A", t: "Publishing or transmitting material containing sexually explicit act, etc. in electronic form", pen: "First conviction: up to 5 years and/or fine. Subsequent: up to 7 years and/or fine", yrs: 7, bail: false, cog: true, court: "Triable by Court", cat: "content" },
+  { n: "67-B", t: "Publishing or transmitting material depicting children in sexually explicit act, etc. in electronic form", pen: "First conviction: either description up to 5 years and/or fine. Subsequent: up to 7 years and/or fine", yrs: 7, bail: false, cog: true, court: "Triable by Court", cat: "content" },
+  { n: "67-C", t: "Intermediary intentionally or knowingly contravening directions on preservation and retention of information", pen: "Imprisonment up to 3 years and fine", yrs: 3, bail: true, cog: true, cat: "inter" },
+  { n: "68", t: "Failure to comply with directions given by Controller", pen: "Imprisonment up to 2 years and/or fine", yrs: 2, bail: true, cog: false, cat: "inter" },
+  { n: "69", t: "Failure to assist the agency in interception, monitoring or decryption of information through any computer resource", pen: "Imprisonment up to 7 years and fine", yrs: 7, bail: false, cog: true, cat: "inter" },
+  { n: "69-A", t: "Intermediary failing to comply with direction to block public access to information", pen: "Imprisonment up to 7 years and fine", yrs: 7, bail: false, cog: true, cat: "inter" },
+  { n: "69-B", t: "Intermediary contravening provisions on monitoring and collecting traffic data for cybersecurity", pen: "Imprisonment up to 3 years and fine", yrs: 3, bail: true, cog: true, cat: "inter" },
+  { n: "70", t: "Securing or attempting to secure access to a protected system", pen: "Imprisonment of either description up to 10 years and fine", yrs: 10, bail: false, cog: true, cat: "terror" },
+  { n: "70-B", t: "Failure to provide information or comply with directions of ICERT, the national agency for incident response", pen: "Imprisonment up to 1 year and/or fine", yrs: 1, bail: true, cog: false, cat: "inter" },
+  { n: "71", t: "Misrepresentation to the Controller or the Certifying Authority", pen: "Imprisonment up to 2 years and/or fine", yrs: 2, bail: true, cog: false, cat: "cert" },
+  { n: "72", t: "Breach of confidentiality and privacy", pen: "Imprisonment up to 2 years and/or fine", yrs: 2, bail: true, cog: false, cat: "id" },
+  { n: "72-A", t: "Disclosure of information in breach of lawful contract", pen: "Imprisonment up to 3 years and/or fine", yrs: 3, bail: true, cog: true, cat: "id" },
+  { n: "73", t: "Publishing electronic signature certificate false in certain particulars", pen: "Imprisonment up to 2 years and/or fine", yrs: 2, bail: true, cog: false, cat: "cert" },
+  { n: "74", t: "Publication for fraudulent purpose", pen: "Imprisonment up to 2 years and/or fine", yrs: 2, bail: true, cog: false, cat: "cert" }
+];
+
+var CRIMES = [
+  ["Unauthorized access of the computers", "Entering or using a computer system without permission."],
+  ["Data diddling", "Altering data before or while it is entered into a computer."],
+  ["Virus/worms attack", "Self-spreading malicious programs that damage or disrupt systems."],
+  ["Theft of computer system", "Stealing the hardware or the system itself."],
+  ["Hacking", "Breaking into a computer system or network."],
+  ["Denial of attacks", "Written this way in the module. It refers to denial-of-service style attacks that block legitimate use."],
+  ["Logic bombs", "Code that stays dormant until a set condition triggers it."],
+  ["Trojan attacks", "Harmful programs disguised as legitimate software."],
+  ["Internet time theft", "Using internet hours that someone else paid for."],
+  ["Web jacking", "Taking over control of a website."],
+  ["Email bombing", "Flooding a mailbox or mail server with a huge volume of messages."],
+  ["Salami attacks", "Skimming many tiny amounts that add up unnoticed."],
+  ["Physically damaging computer system", "Destroying or damaging the hardware."]
+];
+
+var ITACT = [
+  "Tampering with the computer source documents",
+  "Hacking with computer system",
+  "Publishing of information which is obscene in electronic form",
+  "Power of Controller to give directions",
+  "Directions of Controller to a subscriber to extend facilities to decrypt information",
+  "Protected system",
+  "Penalty for misrepresentation",
+  "Penalty for breach of confidentiality and privacy",
+  "Penalty for publishing Digital Signature Certificate false in certain particulars",
+  "Publication for fraudulent purpose",
+  "Act to apply for offence or contravention committed outside India (Confiscation)",
+  "Penalties or confiscation not to interfere with other punishments",
+  "Power to investigate offences"
+];
+
+var INGREDIENTS = [
+  "Knowingly or intentionally concealing",
+  "Knowingly or intentionally destroying",
+  "Knowingly or intentionally altering",
+  "Knowingly or intentionally causing others to conceal",
+  "Knowingly or intentionally causing another to destroy",
+  "Knowingly or intentionally causing another to alter"
+];
+
+var NOCOMPOUND = [
+  "The accused is liable to enhanced or different punishment because of a previous conviction",
+  "The offence affects the socio-economic conditions of the country",
+  "The offence was committed against a child below 18 years",
+  "The offence was committed against a woman"
+];
+
+/* ---------- flashcards ---------- */
+var CARDS = [
+  { id: "b1", topic: "Basics", q: "Which model law was the Information Technology Act 2000 conceptualized on?", a: "The United Nations Commission on International Trade Law (UNCITRAL) Model Law." },
+  { id: "b2", topic: "Basics", q: "Why did laws against online crime become necessary?", a: "Faster world-wide connectivity produced numerous online crimes, and the increase in offences created the need for protective laws." },
+  { id: "b3", topic: "Basics", q: "Define cyber offences.", a: "Illegitimate actions carried out in a classy manner where the computer is the tool, the target, or both." },
+  { id: "b4", topic: "Basics", q: "What does the IT Act define for each category of offence?", a: "The offenses in a detailed manner, along with the penalty for each category." },
+  { id: "c1", topic: "Crime types", q: "Name the cyber crimes listed in the module.", a: "Unauthorized access, data diddling, virus/worms attack, theft of computer system, hacking, denial of attacks, logic bombs, Trojan attacks, internet time theft, web jacking, email bombing, salami attacks, physically damaging a computer system." },
+  { id: "c2", topic: "Crime types", q: "Salami attack", a: "Reviewer note: skimming many tiny amounts that add up unnoticed." },
+  { id: "c3", topic: "Crime types", q: "Logic bomb", a: "Reviewer note: code that stays dormant until a set condition triggers it." },
+  { id: "c4", topic: "Crime types", q: "Data diddling", a: "Reviewer note: altering data before or while it is entered into a computer." },
+  { id: "p1", topic: "Section 65", q: "State Section 65 of the IT Act 2000.", a: "Whoever knowingly or intentionally conceals, destroys or alters (or causes another to) any computer source code that must be kept or maintained by law commits an offence." },
+  { id: "p2", topic: "Section 65", q: "Penalty under Section 65?", a: "Imprisonment up to 3 years, or a fine up to two lakh rupees, or both." },
+  { id: "p3", topic: "Section 65", q: "What does \"computer source code\" mean in Section 65?", a: "The listing of programs, computer commands, design and layout, and program analysis of a computer resource in any form." },
+  { id: "p4", topic: "Section 65", q: "What is the object of Section 65?", a: "To protect the intellectual property invested in the computer, going beyond what the Copyright Law offers for source documents." },
+  { id: "p5", topic: "Section 65", q: "List the essential ingredients of Section 65.", a: "Knowingly or intentionally concealing, destroying or altering, or causing another to conceal, destroy or alter." },
+  { id: "p6", topic: "Section 65", q: "Who tries a Section 65 offence?", a: "Any magistrate. The module also describes it as cognizable." },
+  { id: "m1", topic: "Compounding", q: "Which section covers compounding of offences?", a: "Section 77-A of the IT Act." },
+  { id: "m2", topic: "Compounding", q: "Which offences can a court compound?", a: "Any offence except those punishable with life imprisonment or with imprisonment exceeding three years." },
+  { id: "m3", topic: "Compounding", q: "When can no offence be compounded?", a: "Previous conviction making the accused liable to enhanced or different punishment; offence affects the country's socio-economic conditions; offence against a child below 18; offence against a woman." },
+  { id: "m4", topic: "Compounding", q: "How does an accused person apply for compounding?", a: "File an application in the Court. The offence then stays pending for trial and Sections 265-B and 265-C of the Cr. P.C. apply." }
+];
+SECTIONS.forEach(function (s) {
+  CARDS.push({
+    id: "s" + s.n, topic: "Sections", q: "Section " + s.n,
+    a: s.t + ".\n" + s.pen + ".\n" + (s.bail ? "Bailable" : "Non-bailable") + ", " + (s.cog ? "cognizable" : "non-cognizable") + (s.court ? ", " + s.court.toLowerCase() : "") + "."
+  });
+});
+var CARD_TOPICS = ["All", "Basics", "Crime types", "Section 65", "Sections", "Compounding"];
+
+/* ---------- quiz bank ---------- */
+var BANK = [
+  { t: "Basics", q: "The Information Technology Act 2000 was conceptualized on which model law?", a: "UNCITRAL Model Law", w: ["Budapest Convention", "GDPR", "Berne Convention"], e: "The module says the Act follows the UN Commission on International Trade Law (UNCITRAL) Model Law." },
+  { t: "Basics", q: "Cyber offences are illegitimate actions where the computer is:", a: "The tool, the target, or both", w: ["Only the tool", "Only the target", "Neither, only the network is involved"], e: "The module defines them as actions carried out where the computer is the tool or target or both." },
+  { t: "Basics", q: "Which of these is NOT in the module's list of cyber crimes?", a: "Phishing", w: ["Data diddling", "Salami attacks", "Web jacking"], e: "The module lists unauthorized access, data diddling, virus/worms, theft of a computer system, hacking, denial of attacks, logic bombs, Trojans, internet time theft, web jacking, email bombing, salami attacks and physical damage." },
+  { t: "Basics", q: "A salami attack is best described as:", a: "Skimming many tiny amounts that add up unnoticed", w: ["Flooding a mailbox with messages", "Taking over a website", "Using someone else's paid internet hours"], e: "Reviewer note: salami attacks take very small amounts repeatedly. Email bombing is the mailbox flood, web jacking is the website takeover." },
+  { t: "Basics", q: "Which cyber crime means using internet hours that another person paid for?", a: "Internet time theft", w: ["Web jacking", "Data diddling", "Logic bombs"], e: "Internet time theft is on the module's list of cyber crimes." },
+  { t: "Section 65", q: "Section 65 of the IT Act 2000 deals with:", a: "Tampering with computer source documents", w: ["Identity theft", "Cyber terrorism", "Breach of confidentiality"], e: "Section 65 punishes concealing, destroying or altering computer source code that the law requires to be kept." },
+  { t: "Section 65", q: "What is the maximum imprisonment under Section 65?", a: "3 years", w: ["1 year", "5 years", "7 years"], e: "Up to three years, or a fine, or both." },
+  { t: "Section 65", q: "What is the maximum fine under Section 65?", a: "Two lakh rupees", w: ["One lakh rupees", "Five lakh rupees", "Ten lakh rupees"], e: "The fine may extend up to two lakh rupees." },
+  { t: "Section 65", q: "\"Computer source code\" in Section 65 means:", a: "The listing of programs, commands, design and layout, and program analysis", w: ["Only the compiled executable file", "The user data stored on a computer", "The hardware design of a computer"], e: "That is the explanation given in the module." },
+  { t: "Section 65", q: "The object of Section 65 is to protect:", a: "The intellectual property invested in the computer", w: ["Digital signatures", "Children online", "National critical infrastructure"], e: "It protects source documents beyond what the Copyright Law covers." },
+  { t: "Section 65", q: "Which is NOT an essential ingredient of Section 65?", a: "Negligently copying a file", w: ["Knowingly concealing", "Intentionally destroying", "Causing another to alter"], e: "The ingredients are knowing or intentional concealing, destroying or altering, directly or by causing another." },
+  { t: "Offences & sections", q: "Which section covers cyber terrorism?", a: "66-F", w: ["66-C", "67-B", "70"], e: "Section 66-F is cyber terrorism." },
+  { t: "Offences & sections", q: "Which section covers identity theft?", a: "66-C", w: ["66-D", "66-E", "72"], e: "66-C is identity theft. 66-D is cheating by personation and 66-E is violation of privacy." },
+  { t: "Offences & sections", q: "Section 66-D covers:", a: "Cheating by personation using a computer resource", w: ["Violation of privacy", "Dishonestly receiving stolen devices", "Publishing obscene material"], e: "Personation means pretending to be someone else to cheat." },
+  { t: "Offences & sections", q: "Section 66-E covers:", a: "Violation of privacy", w: ["Identity theft", "Cyber terrorism", "Publication for fraudulent purpose"], e: "Up to 3 years and/or fine, bailable and cognizable." },
+  { t: "Offences & sections", q: "Section 66-B covers:", a: "Dishonestly receiving a stolen computer resource or communication device", w: ["Sending offensive messages", "Tampering with source code", "Failure to assist decryption"], e: "The module lists up to 3 years and/or a fine up to Rs. 1 lakh." },
+  { t: "Offences & sections", q: "Section 67-B deals with material:", a: "Depicting children in a sexually explicit act", w: ["Containing offensive messages", "That is obscene in general", "Related to false signature certificates"], e: "67 is obscene material, 67-A is sexually explicit acts, 67-B is children in sexually explicit acts." },
+  { t: "Offences & sections", q: "Section 69-A concerns an intermediary that:", a: "Fails to comply with a direction to block public access to information", w: ["Fails to preserve information", "Misrepresents to the Controller", "Publishes a false certificate"], e: "Up to 7 years and fine, non-bailable and cognizable." },
+  { t: "Offences & sections", q: "Section 70 deals with:", a: "Securing or attempting to secure access to a protected system", w: ["Publishing a false Digital Signature Certificate", "Breach of confidentiality", "Failure to follow ICERT directions"], e: "Up to 10 years and fine." },
+  { t: "Offences & sections", q: "Section 70-B names which body as the national agency for incident response?", a: "ICERT (Indian Computer Emergency Response Team)", w: ["The Controller", "The Certifying Authority", "A Court of Sessions"], e: "Failing to give information or follow ICERT directions carries up to 1 year and/or fine." },
+  { t: "Offences & sections", q: "Section 71 punishes:", a: "Misrepresentation to the Controller or Certifying Authority", w: ["Cheating by personation", "Disclosure in breach of lawful contract", "Failure to assist interception"], e: "Up to 2 years and/or fine, bailable and non-cognizable." },
+  { t: "Offences & sections", q: "Section 73 concerns:", a: "Publishing an electronic signature certificate that is false in certain particulars", w: ["Tampering with source code", "Sending offensive messages", "Intermediary monitoring of traffic data"], e: "Up to 2 years and/or fine." },
+  { t: "Offences & sections", q: "Section 74 covers:", a: "Publication for fraudulent purpose", w: ["Cyber terrorism", "Violation of privacy", "Computer related offences"], e: "Up to 2 years and/or fine, bailable and non-cognizable." },
+  { t: "Penalties & bail", q: "Which section carries imprisonment up to life?", a: "66-F", w: ["70", "67-A", "69"], e: "Cyber terrorism may extend to life imprisonment and is non-bailable." },
+  { t: "Penalties & bail", q: "Which of these is non-bailable?", a: "Section 70", w: ["Section 66-C", "Section 67", "Section 72"], e: "Section 70 (protected system) is non-bailable and cognizable." },
+  { t: "Penalties & bail", q: "Maximum imprisonment for accessing a protected system under Section 70?", a: "10 years and fine", w: ["3 years", "5 years", "7 years"], e: "Imprisonment of either description up to 10 years and fine." },
+  { t: "Penalties & bail", q: "Penalty on subsequent conviction under Section 67-A?", a: "Up to 7 years and/or fine", w: ["Up to 3 years", "Up to 5 years", "Up to 10 years"], e: "First conviction up to 5 years, subsequent up to 7 years." },
+  { t: "Penalties & bail", q: "Penalty on first conviction under Section 67?", a: "Up to 3 years and/or fine", w: ["Up to 5 years", "Up to 7 years", "Up to 1 year"], e: "Section 67 is bailable. Repeat conviction rises to 5 years." },
+  { t: "Penalties & bail", q: "Failing to assist an agency with interception, monitoring or decryption (Section 69) carries:", a: "Up to 7 years and fine", w: ["Up to 2 years and/or fine", "Up to 3 years and fine", "Up to 10 years and fine"], e: "Section 69 is non-bailable and cognizable." },
+  { t: "Penalties & bail", q: "Section 68 (failure to comply with the Controller's directions) is:", a: "Bailable and non-cognizable", w: ["Non-bailable and cognizable", "Bailable and cognizable", "Non-bailable and non-cognizable"], e: "Up to 2 years and/or fine." },
+  { t: "Penalties & bail", q: "Section 72 (breach of confidentiality and privacy) carries:", a: "Up to 2 years and/or fine", w: ["Up to 3 years and fine", "Up to 5 years", "Up to 7 years and fine"], e: "Bailable and non-cognizable." },
+  { t: "Penalties & bail", q: "Section 72-A (disclosure in breach of lawful contract) carries:", a: "Up to 3 years and/or fine", w: ["Up to 2 years and/or fine", "Up to 7 years and fine", "Up to life"], e: "Cognizable and bailable." },
+  { t: "Penalties & bail", q: "Cyber terrorism is triable by:", a: "A Court of Sessions", w: ["Any magistrate", "The Controller", "ICERT"], e: "Section 66-F is non-bailable, cognizable and triable by a Court of Sessions." },
+  { t: "Penalties & bail", q: "Section 69-B (intermediary and traffic data monitoring) carries:", a: "Up to 3 years and fine", w: ["Up to 7 years and fine", "Up to 1 year", "Up to 10 years"], e: "Bailable and cognizable." },
+  { t: "Compounding", q: "Which section allows a court to compound offences?", a: "Section 77-A", w: ["Section 65", "Section 70-B", "Section 74"], e: "Section 77-A of the IT Act." },
+  { t: "Compounding", q: "Which offences can a court compound?", a: "All except those punishable with life or more than 3 years", w: ["Only offences punishable with life", "Only offences above 3 years", "Every offence under the Act"], e: "Offences with life imprisonment or a term exceeding three years cannot be compounded." },
+  { t: "Compounding", q: "Which offence can NOT be compounded?", a: "One committed against a child below 18 years", w: ["A first offence with a 2 year penalty", "An offence against a company", "An offence by a first-time offender"], e: "Also excluded: offences against a woman, offences affecting the country's socio-economic conditions, and accused persons liable to enhanced punishment because of a previous conviction." },
+  { t: "Compounding", q: "Compounding applications are handled under which Cr. P.C. sections?", a: "265-B and 265-C", w: ["65 and 66", "77 and 78", "154 and 155"], e: "The offence stays pending for trial and Sections 265-B and 265-C of the Cr. P.C. apply." }
+];
+var QUIZ_TOPICS = ["All", "Basics", "Section 65", "Offences & sections", "Penalties & bail", "Compounding"];
+
+/* ---------- storage ---------- */
+function sget(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } }
+function sset(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+var S = {
+  tab: "concepts",
+  name: sget("it401.name", ""),
+  known: sget("it401.known", {}),
+  best: sget("it401.best", null),
+  cq: "", cTopic: "All",
+  p: { q: "", cat: "all", bail: "all", cog: "all", term: "all", sort: "sec" },
+  fc: { topic: "All", i: 0, flipped: false, order: null },
+  quiz: { stage: "setup", topic: "All", n: 10, list: [], i: 0, score: 0, picked: null, missed: [] }
+};
+
+/* ---------- helpers ---------- */
+var view = document.getElementById("view");
+function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function chips(group, items, cur, labelFn) {
+  return '<div class="chips" data-group="' + group + '">' + items.map(function (it) {
+    var id = typeof it === "string" ? it : it.id;
+    var label = labelFn ? labelFn(it) : (typeof it === "string" ? it : it.label);
+    return '<button type="button" class="chip" data-val="' + esc(id) + '" aria-pressed="' + (cur === id) + '">' + esc(label) + "</button>";
+  }).join("") + "</div>";
+}
+function termBucket(y) { return y >= 99 ? "life" : y <= 2 ? "le2" : y === 3 ? "3" : "5to10"; }
+
+/* ---------- profile ---------- */
+function initials(n) {
+  var p = n.trim().split(/\s+/).filter(Boolean);
+  if (!p.length) return "?";
+  return (p[0][0] + (p.length > 1 ? p[p.length - 1][0] : "")).toUpperCase();
+}
+function knownCount() { return CARDS.filter(function (c) { return S.known[c.id]; }).length; }
+function renderProfile() {
+  document.getElementById("avatar").textContent = initials(S.name);
+  document.getElementById("avName").textContent = S.name.trim().split(/\s+/)[0] || "";
+}
+
+/* ---------- profile dialog ---------- */
+var modalEl = null;
+function closeModal() {
+  if (!modalEl) return;
+  modalEl.remove(); modalEl = null;
+  document.removeEventListener("keydown", modalKey);
+  var b = document.getElementById("profileBtn"); if (b) b.focus();
+}
+function modalKey(e) { if (e.key === "Escape" && S.name.trim()) closeModal(); }
+function openModal(mode) {
+  if (modalEl) return;
+  var welcome = mode === "welcome";
+  modalEl = document.createElement("div");
+  modalEl.className = "overlay";
+  modalEl.innerHTML =
+    '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">' +
+    '<div class="mhead"><div class="avatar" id="mAvatar">' + esc(initials(S.name)) + "</div><div><h2 id=\"mTitle\">" + (welcome ? "Welcome. What should we call you?" : "Your profile") + '</h2><p class="sub">' + (welcome ? "Enter a user name to start reviewing. Your progress stays in this browser." : "Change your name or check your progress.") + "</p></div></div>" +
+    '<form id="mForm"><div><label for="mName">User name</label><input id="mName" type="text" maxlength="40" autocomplete="nickname" placeholder="e.g. Juan Dela Cruz" value="' + esc(S.name) + '"><p class="err" id="mErr" hidden>Enter a user name to continue.</p></div>' +
+    (welcome ? "" : '<div class="stats"><div class="stat"><b>' + SECTIONS.length + '</b><span>Sections</span></div><div class="stat"><b id="mCards">' + knownCount() + "/" + CARDS.length + '</b><span>Cards known</span></div><div class="stat"><b id="mBest">' + (S.best === null ? "–" : S.best + "%") + "</b><span>Best quiz</span></div></div>") +
+    '<div class="mactions">' +
+    (welcome ? '<button type="button" class="btn" id="mGuest">Continue as Guest</button>' : '<button type="button" class="btn bad" id="mReset">Reset progress</button>') +
+    '<span class="right">' + (welcome ? "" : '<button type="button" class="btn" id="mClose">Close</button>') + '<button type="submit" class="btn primary">' + (welcome ? "Start reviewing" : "Save") + "</button></span></div></form></div>";
+  document.body.appendChild(modalEl);
+  document.addEventListener("keydown", modalKey);
+  var form = document.getElementById("mForm"), inp = document.getElementById("mName");
+  inp.focus(); inp.select();
+  function commit(n) {
+    S.name = n; sset("it401.name", n); renderProfile(); closeModal();
+    if (S.tab === "quiz" && S.quiz.stage === "setup") renderQuiz();
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var n = inp.value.trim();
+    if (!n) { document.getElementById("mErr").hidden = false; inp.focus(); return; }
+    commit(n);
+  });
+  if (welcome) document.getElementById("mGuest").addEventListener("click", function () { commit("Guest"); });
+  else {
+    document.getElementById("mClose").addEventListener("click", closeModal);
+    modalEl.addEventListener("click", function (e) { if (e.target === modalEl) closeModal(); });
+    var rb = document.getElementById("mReset"), armed = false;
+    rb.addEventListener("click", function () {
+      if (!armed) { armed = true; rb.textContent = "Tap again to confirm"; return; }
+      S.known = {}; S.best = null; sset("it401.known", S.known); sset("it401.best", null);
+      document.getElementById("mCards").textContent = "0/" + CARDS.length;
+      document.getElementById("mBest").textContent = "–";
+      armed = false; rb.textContent = "Reset progress";
+      if (S.tab === "cards") renderCards();
+    });
+  }
+}
+
+/* ---------- concepts ---------- */
+function conceptGroups() {
+  var q = S.cq.toLowerCase();
+  function hit() { for (var i = 0; i < arguments.length; i++) if (String(arguments[i]).toLowerCase().indexOf(q) > -1) return true; return false; }
+  var out = [];
+
+  var basics = [
+    { h: "Why the IT Act exists", p: "Faster world-wide connectivity produced many online crimes. The increase in offences created the need for protective laws, so the Information Technology Act 2000 was drawn up on the UNCITRAL Model Law." },
+    { h: "What the law does", p: "It defines offenses in detail and attaches a penalty to each category of offence." },
+    { h: "What is a cyber offence?", p: "Illegitimate actions carried out in a classy manner where the computer is the tool, the target, or both." }
+  ].filter(function (c) { return !q || hit(c.h, c.p); });
+  if (basics.length) out.push({ topic: "Basics", html: '<section class="group"><h2>The basics</h2><p class="sub">Start here. These ideas open the module.</p><div class="cards wide">' + basics.map(function (c) { return '<div class="card"><h3>' + esc(c.h) + "</h3><p>" + esc(c.p) + "</p></div>"; }).join("") + "</div></section>" });
+
+  var crimes = CRIMES.filter(function (c) { return !q || hit(c[0], c[1]); });
+  if (crimes.length) out.push({ topic: "Crime types", html: '<section class="group"><h2>Cyber crimes in the module</h2><p class="sub">Thirteen types. The short explanations are reviewer notes, not module text.</p><div class="cards">' + crimes.map(function (c) { return '<div class="card"><span class="tag">Crime type</span><h3>' + esc(c[0]) + '</h3><p class="rn">' + esc(c[1]) + "</p></div>"; }).join("") + "</div></section>" });
+
+  var act = ITACT.filter(function (t) { return !q || hit(t); });
+  if (act.length) out.push({ topic: "IT Act offences", html: '<section class="group"><h2>Offences included in the IT Act 2000</h2><p class="sub">The module\'s list of thirteen headings.</p><div class="cards">' + act.map(function (t, i) { return '<div class="card"><span class="tag">Heading</span><p style="color:var(--ink)">' + esc(t) + "</p></div>"; }).join("") + "</div></section>" });
+
+  var s65text = "Section 65 tampering with computer source documents knowingly intentionally conceals destroys alters source code imprisonment three years fine two lakh intellectual property copyright magistrate cognizable";
+  if (!q || hit(s65text, INGREDIENTS.join(" "))) out.push({ topic: "Section 65", html:
+    '<section class="group"><h2>Section 65 up close</h2><p class="sub">The module\'s worked example.</p><div class="s65">' +
+    '<div class="card big"><span class="tag">Statement</span><h3>Tampering with computer source documents</h3><p>Whoever knowingly or intentionally conceals, destroys or alters, or causes another to conceal, destroy or alter, any computer source code that the law requires to be kept or maintained, shall be punishable with imprisonment up to three years, or with a fine up to two lakh rupees, or with both.</p></div>' +
+    '<div class="col">' +
+    '<div class="card"><span class="tag">Explanation</span><p>"Computer source code" means the listing of programs, computer commands, design and layout and program analysis of a computer resource in any form.</p></div>' +
+    '<div class="card"><span class="tag">Object</span><p>Protects the intellectual property invested in the computer, beyond what the Copyright Law offers. It helps companies protect their program source code.</p></div>' +
+    '<div class="card"><span class="tag">Essential ingredients</span><ul>' + INGREDIENTS.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + "</ul></div>" +
+    '<div class="card"><span class="tag">Trial</span><p>Tried by any magistrate. Imprisonment up to 3 years and/or a fine of two lakh rupees.</p></div>' +
+    "</div></div></section>" });
+
+  var ctext = "compounding offences section 77-A court previous conviction socio economic child woman application 265-B 265-C Cr. P.C.";
+  if (!q || hit(ctext, NOCOMPOUND.join(" "))) out.push({ topic: "Compounding", html:
+    '<section class="group"><h2>Compounding of offences</h2><p class="sub">Section 77-A of the IT Act.</p><div class="cards wide">' +
+    '<div class="card"><span class="tag">The rule</span><p>Any Court of competent jurisdiction may compound offences, other than offences punishable with life imprisonment or with imprisonment for a term exceeding three years.</p></div>' +
+    '<div class="card"><span class="tag">Never compounded if</span><ul>' + NOCOMPOUND.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + "</ul></div>" +
+    '<div class="card"><span class="tag">Procedure</span><p>The accused files an application in the Court. The offence then stays pending for trial, and Sections 265-B and 265-C of the Cr. P.C. apply.</p></div>' +
+    "</div></section>" });
+  return out;
+}
+function renderConcepts() {
+  var topics = ["All", "Basics", "Crime types", "IT Act offences", "Section 65", "Compounding"];
+  var groups = conceptGroups().filter(function (g) { return S.cTopic === "All" || g.topic === S.cTopic; });
+  view.innerHTML =
+    '<div class="toolbar"><input id="cSearch" class="search" type="search" placeholder="Search concepts, e.g. hacking, 77-A, source code" value="' + esc(S.cq) + '" aria-label="Search concepts">' +
+    "</div>" +
+    '<div class="toolbar">' + chips("cTopic", topics, S.cTopic) + "</div>" +
+    (groups.length ? groups.map(function (g) { return g.html; }).join("") : '<div class="empty">Nothing matches that search. Try a shorter keyword.</div>');
+  var inp = document.getElementById("cSearch");
+  inp.addEventListener("input", function () {
+    S.cq = inp.value; var pos = inp.selectionStart; renderConcepts();
+    var n = document.getElementById("cSearch"); n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) {}
+  });
+}
+
+/* ---------- penalties ---------- */
+function segHtml(group, opts, cur) {
+  return '<div class="chips" data-group="' + group + '">' + opts.map(function (o) {
+    return '<button type="button" class="chip" data-val="' + o[0] + '" aria-pressed="' + (cur === o[0]) + '">' + o[1] + "</button>";
+  }).join("") + "</div>";
+}
+function filteredSections() {
+  var f = S.p, q = f.q.trim().toLowerCase();
+  var list = SECTIONS.filter(function (s) {
+    if (f.cat !== "all" && s.cat !== f.cat) return false;
+    if (f.bail !== "all" && (f.bail === "b") !== s.bail) return false;
+    if (f.cog !== "all" && (f.cog === "c") !== s.cog) return false;
+    if (f.term !== "all" && termBucket(s.yrs) !== f.term) return false;
+    if (q && (s.n + " " + s.t + " " + s.pen).toLowerCase().indexOf(q) === -1 && ("section " + s.n).indexOf(q) === -1) return false;
+    return true;
+  });
+  if (f.sort === "term") list = list.slice().sort(function (a, b) { return b.yrs - a.yrs; });
+  return list;
+}
+function secCard(s) {
+  var pct = s.yrs >= 99 ? 100 : Math.min(100, s.yrs / 10 * 100);
+  var label = s.yrs >= 99 ? "Life" : s.yrs + (s.yrs === 1 ? " yr max" : " yrs max");
+  return '<article class="sec"><span class="num">§ ' + esc(s.n) + "</span><h3>" + esc(s.t) + '</h3><p class="pen">' + esc(s.pen) + "</p>" +
+    '<div class="bar' + (s.yrs >= 99 ? " life" : "") + '"><div class="track"><i style="width:' + pct + '%"></i></div><span>' + label + "</span></div>" +
+    '<div class="badges"><span class="badge ' + (s.bail ? "good" : "bad") + '">' + (s.bail ? "Bailable" : "Non-bailable") + '</span><span class="badge ' + (s.cog ? "bad" : "good") + '">' + (s.cog ? "Cognizable" : "Non-cognizable") + "</span>" +
+    (s.court ? '<span class="badge neutral">' + esc(s.court) + "</span>" : "") + "</div>" +
+    (s.note ? '<div class="note">' + esc(s.note) + "</div>" : "") + "</article>";
+}
+function renderPenalties() {
+  var f = S.p;
+  var cats = [{ id: "all", label: "All" }].concat(CATS);
+  view.innerHTML =
+    '<div class="filters">' +
+    '<div class="fgroup wide"><h4>Search</h4><input id="pSearch" class="search" style="width:100%" type="search" placeholder="Section number or keyword, e.g. 66-C, privacy, intermediary" value="' + esc(f.q) + '" aria-label="Search sections"></div>' +
+    '<div class="fgroup wide"><h4>Category</h4>' + chips("pcat", cats, f.cat) + "</div>" +
+    '<div class="fgroup"><h4>Bail</h4>' + segHtml("pbail", [["all", "Any"], ["b", "Bailable"], ["n", "Non-bailable"]], f.bail) + "</div>" +
+    '<div class="fgroup"><h4>Cognizance</h4>' + segHtml("pcog", [["all", "Any"], ["c", "Cognizable"], ["n", "Non-cognizable"]], f.cog) + "</div>" +
+    '<div class="fgroup"><h4>Maximum term</h4>' + segHtml("pterm", [["all", "Any"], ["le2", "≤ 2 yrs"], ["3", "3 yrs"], ["5to10", "5–10 yrs"], ["life", "Life"]], f.term) + "</div>" +
+    '<div class="fgroup"><h4>Sort</h4><select id="pSort" aria-label="Sort sections"><option value="sec"' + (f.sort === "sec" ? " selected" : "") + '>Section order</option><option value="term"' + (f.sort === "term" ? " selected" : "") + ">Heaviest penalty first</option></select></div>" +
+    "</div>" +
+    '<div class="count"><span id="pCount"></span><button type="button" class="linkbtn" id="pClear">Clear filters</button></div>' +
+    '<div id="pGrid"></div>';
+  fillPenalties();
+  var inp = document.getElementById("pSearch");
+  inp.addEventListener("input", function () { S.p.q = inp.value; fillPenalties(); });
+  document.getElementById("pSort").addEventListener("change", function (e) { S.p.sort = e.target.value; fillPenalties(); });
+  document.getElementById("pClear").addEventListener("click", function () { S.p = { q: "", cat: "all", bail: "all", cog: "all", term: "all", sort: "sec" }; renderPenalties(); });
+}
+function fillPenalties() {
+  var list = filteredSections();
+  document.getElementById("pCount").textContent = "Showing " + list.length + " of " + SECTIONS.length + " sections";
+  document.getElementById("pGrid").innerHTML = list.length ? '<div class="grid">' + list.map(secCard).join("") + "</div>" : '<div class="empty">No section matches these filters. Loosen one or press Clear filters.</div>';
+}
+
+/* ---------- flashcards ---------- */
+function fcDeck() {
+  var d = CARDS.filter(function (c) { return S.fc.topic === "All" || c.topic === S.fc.topic; });
+  if (S.fc.order === "shuffle") { if (!fcDeck.cache || fcDeck.key !== S.fc.topic) { fcDeck.cache = shuffle(d); fcDeck.key = S.fc.topic; } return fcDeck.cache; }
+  fcDeck.cache = null; return d;
+}
+function renderCards() {
+  var deck = fcDeck();
+  if (S.fc.i >= deck.length) S.fc.i = 0;
+  var c = deck[S.fc.i];
+  var kn = deck.filter(function (x) { return S.known[x.id]; }).length;
+  view.innerHTML =
+    '<div class="toolbar">' + chips("fcTopic", CARD_TOPICS, S.fc.topic) + "</div>" +
+    '<div class="fc-wrap">' +
+    '<div class="count" style="margin:0"><span>Card ' + (S.fc.i + 1) + " of " + deck.length + " · " + kn + ' known in this deck</span><button type="button" class="linkbtn" id="fcShuffle">' + (S.fc.order === "shuffle" ? "Back to module order" : "Shuffle deck") + "</button></div>" +
+    '<div class="progress" aria-hidden="true"><i style="width:' + (deck.length ? kn / deck.length * 100 : 0) + '%"></i></div>' +
+    '<button type="button" class="fc' + (S.fc.flipped ? " back" : "") + '" id="fcCard" aria-label="Flashcard, press to flip">' +
+    '<div class="meta"><span>' + esc(c.topic) + "</span><span>" + (S.known[c.id] ? "Known" : S.fc.flipped ? "Answer" : "Question") + "</span></div>" +
+    '<div class="body">' + esc(S.fc.flipped ? c.a : c.q) + "</div>" +
+    '<div class="hint">' + (S.fc.flipped ? "Tap to see the question again" : "Tap to reveal the answer") + "</div></button>" +
+    '<div class="fc-actions"><button type="button" class="btn" id="fcPrev">Previous</button>' +
+    '<span style="display:flex;gap:10px;flex-wrap:wrap"><button type="button" class="btn bad" id="fcLearn">Still learning</button><button type="button" class="btn good" id="fcKnow">Got it</button></span>' +
+    '<button type="button" class="btn primary" id="fcNext">Next</button></div></div>';
+  function go(d) { S.fc.i = (S.fc.i + d + deck.length) % deck.length; S.fc.flipped = false; renderCards(); }
+  document.getElementById("fcCard").addEventListener("click", function () { S.fc.flipped = !S.fc.flipped; renderCards(); });
+  document.getElementById("fcPrev").addEventListener("click", function () { go(-1); });
+  document.getElementById("fcNext").addEventListener("click", function () { go(1); });
+  document.getElementById("fcKnow").addEventListener("click", function () { S.known[c.id] = true; sset("it401.known", S.known); renderProfile(); go(1); });
+  document.getElementById("fcLearn").addEventListener("click", function () { delete S.known[c.id]; sset("it401.known", S.known); renderProfile(); go(1); });
+  document.getElementById("fcShuffle").addEventListener("click", function () { S.fc.order = S.fc.order === "shuffle" ? null : "shuffle"; fcDeck.cache = null; S.fc.i = 0; S.fc.flipped = false; renderCards(); });
+}
+
+/* ---------- quiz ---------- */
+function startQuiz(list) {
+  var qs = shuffle(list).map(function (b) {
+    var opts = shuffle([{ t: b.a, ok: true }].concat(b.w.map(function (x) { return { t: x, ok: false }; })));
+    return { t: b.t, q: b.q, a: b.a, e: b.e, opts: opts };
+  });
+  S.quiz.list = qs; S.quiz.i = 0; S.quiz.score = 0; S.quiz.picked = null; S.quiz.missed = []; S.quiz.stage = "play";
+  renderQuiz();
+}
+function renderQuiz() {
+  var Q = S.quiz;
+  if (Q.stage === "setup") {
+    var pool = BANK.filter(function (b) { return Q.topic === "All" || b.t === Q.topic; });
+    var ns = [5, 10, 20, pool.length].filter(function (n, i, a) { return n <= pool.length && a.indexOf(n) === i; });
+    view.innerHTML = '<div class="panel setup"><div><h2>Test yourself' + (S.name ? ", " + esc(S.name.trim().split(/\s+/)[0]) : "") + '</h2><p class="sub">' + BANK.length + " questions from the module. Pick a topic and a length.</p></div>" +
+      '<div class="fgroup"><h4>Topic</h4>' + chips("qTopic", QUIZ_TOPICS, Q.topic) + "</div>" +
+      '<div class="fgroup"><h4>Questions</h4>' + chips("qN", ns.map(String), String(Math.min(Q.n, pool.length)), function (n) { return Number(n) === pool.length ? "All " + n : n; }) + "</div>" +
+      '<div><button type="button" class="btn primary" id="qStart">Start quiz (' + Math.min(Q.n, pool.length) + " questions)</button></div></div>";
+    document.getElementById("qStart").addEventListener("click", function () { startQuiz(shuffle(pool).slice(0, Math.min(Q.n, pool.length))); });
+    return;
+  }
+  if (Q.stage === "done") {
+    var total = Q.list.length, pct = Math.round(Q.score / total * 100);
+    var msg = pct >= 90 ? "Exam ready. Keep it fresh with flashcards." : pct >= 70 ? "Solid. Review the missed items below." : pct >= 50 ? "Getting there. Study the Penalties tab, then retry." : "Start with Concepts and Flashcards, then try again.";
+    view.innerHTML = '<div class="panel"><div class="q-meta"><span>Result</span><span>' + (S.name ? esc(S.name) : "") + '</span></div><div class="score">' + pct + '%</div><h2>' + Q.score + " of " + total + " correct</h2><p class=\"sub\">" + msg + "</p>" +
+      (Q.missed.length ? '<h3 style="font-size:18px;margin-top:8px">To review</h3><div class="review">' + Q.missed.map(function (m) { return '<div class="item"><b>' + esc(m.q) + '</b><span>' + esc(m.a) + "</span><br>" + esc(m.e) + "</div>"; }).join("") + "</div>" : '<p class="sub">No misses. Nice work.</p>') +
+      '<div style="display:flex;gap:10px;flex-wrap:wrap">' + (Q.missed.length ? '<button type="button" class="btn primary" id="qRetry">Retry missed</button>' : "") + '<button type="button" class="btn" id="qAgain">New quiz</button></div></div>';
+    var r = document.getElementById("qRetry");
+    if (r) r.addEventListener("click", function () {
+      var pool = BANK.filter(function (b) { return Q.missed.some(function (m) { return m.q === b.q; }); });
+      startQuiz(pool);
+    });
+    document.getElementById("qAgain").addEventListener("click", function () { Q.stage = "setup"; renderQuiz(); });
+    return;
+  }
+  var q = Q.list[Q.i], answered = Q.picked !== null;
+  view.innerHTML = '<div class="panel"><div class="q-meta"><span>Question ' + (Q.i + 1) + " of " + Q.list.length + "</span><span>" + esc(q.t) + "</span></div>" +
+    '<div class="progress" aria-hidden="true"><i style="width:' + (Q.i / Q.list.length * 100) + '%"></i></div>' +
+    '<div class="q">' + esc(q.q) + '</div><div class="opts">' +
+    q.opts.map(function (o, i) {
+      var cls = "opt" + (answered ? (o.ok ? " right" : i === Q.picked ? " wrong" : "") : "");
+      return '<button type="button" class="' + cls + '" data-i="' + i + '"' + (answered ? " disabled" : "") + '><span class="k">' + "ABCD"[i] + "</span><span>" + esc(o.t) + "</span></button>";
+    }).join("") + "</div>" +
+    (answered ? '<div class="explain"><b>' + (q.opts[Q.picked].ok ? "Correct. " : "Not quite. ") + "</b>" + esc(q.e) + '</div><div style="margin-top:14px"><button type="button" class="btn primary" id="qNext">' + (Q.i + 1 === Q.list.length ? "See result" : "Next question") + "</button></div>" : "") + "</div>";
+  Array.prototype.forEach.call(view.querySelectorAll(".opt"), function (b) {
+    b.addEventListener("click", function () {
+      var i = Number(b.getAttribute("data-i")); Q.picked = i;
+      if (q.opts[i].ok) Q.score++; else Q.missed.push(q);
+      renderQuiz();
+    });
+  });
+  var nx = document.getElementById("qNext");
+  if (nx) { nx.focus(); nx.addEventListener("click", function () {
+    if (Q.i + 1 === Q.list.length) {
+      Q.stage = "done";
+      var pct = Math.round(Q.score / Q.list.length * 100);
+      if (S.best === null || pct > S.best) { S.best = pct; sset("it401.best", pct); }
+      renderProfile();
+    } else { Q.i++; Q.picked = null; }
+    renderQuiz();
+  }); }
+}
+
+/* ---------- routing and events ---------- */
+function render() {
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"), function (t) { t.setAttribute("aria-selected", String(t.getAttribute("data-tab") === S.tab)); });
+  if (S.tab === "concepts") renderConcepts();
+  else if (S.tab === "penalties") renderPenalties();
+  else if (S.tab === "cards") renderCards();
+  else renderQuiz();
+}
+document.querySelector(".nav").addEventListener("click", function (e) {
+  var t = e.target.closest(".tab");
+  if (t) { S.tab = t.getAttribute("data-tab"); if (S.tab === "quiz" && S.quiz.stage === "play" && !S.quiz.list.length) S.quiz.stage = "setup"; render(); window.scrollTo(0, 0); }
+});
+view.addEventListener("click", function (e) {
+  var b = e.target.closest(".chip");
+  if (!b) return;
+  var g = b.parentNode.getAttribute("data-group"), v = b.getAttribute("data-val");
+  if (g === "cTopic") { S.cTopic = v; renderConcepts(); }
+  else if (g === "pcat") { S.p.cat = v; renderPenalties(); }
+  else if (g === "pbail") { S.p.bail = v; renderPenalties(); }
+  else if (g === "pcog") { S.p.cog = v; renderPenalties(); }
+  else if (g === "pterm") { S.p.term = v; renderPenalties(); }
+  else if (g === "fcTopic") { S.fc.topic = v; S.fc.i = 0; S.fc.flipped = false; fcDeck.cache = null; renderCards(); }
+  else if (g === "qTopic") { S.quiz.topic = v; renderQuiz(); }
+  else if (g === "qN") { S.quiz.n = Number(v); renderQuiz(); }
+});
+document.getElementById("profileBtn").addEventListener("click", function () { openModal("profile"); });
+
+document.getElementById("themeBtn").addEventListener("click", function () {
+  var root = document.documentElement;
+  var cur = root.getAttribute("data-theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  var next = cur === "dark" ? "light" : "dark";
+  root.setAttribute("data-theme", next); sset("it401.theme", next);
+});
+var savedTheme = sget("it401.theme", null);
+if (savedTheme === "dark" || savedTheme === "light") document.documentElement.setAttribute("data-theme", savedTheme);
+
+renderProfile();
+render();
+if (!S.name.trim()) openModal("welcome");
+</script>
+
+</body>
+</html>
